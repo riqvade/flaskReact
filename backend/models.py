@@ -16,3 +16,6 @@ class Recipe(db.Model):
     def __repr__(self):
         return f"<Recipe {self.title} >"
     
+    def save(self):
+        return f"<Recipe {self.title}"
+    
