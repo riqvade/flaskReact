@@ -10,7 +10,7 @@ app.config.from_object(DevConfig)
 
 db.init_app(app)
 
-migrate=Migrate(app, db)
+migrate = Migrate(app, db)
 
 api = Api(app, doc='/docs')
 
@@ -32,63 +32,59 @@ class HelloResource(Resource):
 
 @api.route('/recipes')
 class RecipesResource(Resource):
+
     @api.marshal_list_with(recipe_model)
     def get(self):
         """Get all recipes"""
-        
-        recipes=Recipe.query.all()
-        
-        
+
+        recipes = Recipe.query.all()
+
         return recipes
 
     @api.marshal_with(recipe_model)
     def post(self):
         """Create a new recipe"""
-        
-        data=request.get_json()
-        
-        new_recipe=Recipe(
-            title=data.get('title'),
-            description=data.get('description')
-        )
-        
+
+        data = request.get_json()
+
+        new_recipe = Recipe(title=data.get('title'),
+                            description=data.get('description'))
+
         new_recipe.save()
-        
+
         return new_recipe, 201
 
 
 @api.route('/recipe/<int:id>')
 class RecipeResource(Resource):
-    
+
     @api.marshal_with(recipe_model)
     def get(self, id):
         """Get recipe by id"""
-        recipe=Recipe.query.get_or_404(id)
-        
-        return recipe
+        recipe = Recipe.query.get_or_404(id)
 
+        return recipe
 
     @api.marshal_with(recipe_model)
     def put(self, id):
         """update recipe by id"""
-        
-        recipe_to_update=Recipe.query.get_or_404(id)
-        
-        data=request.get_json()
-        
+
+        recipe_to_update = Recipe.query.get_or_404(id)
+
+        data = request.get_json()
+
         recipe_to_update.update(data.get('title'), data.get('description'))
-        
+
         return recipe_to_update
-        
-        
+
     @api.marshal_with(recipe_model)
     def delete(self, id):
         """update recipe by id"""
-        
-        recipe_to_delete=Recipe.query.get_or_404(id)
-        
+
+        recipe_to_delete = Recipe.query.get_or_404(id)
+
         recipe_to_delete.delete()
-        
+
         return recipe_to_delete
 
 
