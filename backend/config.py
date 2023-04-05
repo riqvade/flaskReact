@@ -22,4 +22,6 @@ class ProdConfig(Config):
 
 
 class TestConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI="postgresql://postgres:123@localhost/FlaskReactTestDb"
+    SQLALCHEMY_ECHO = False
+    TESTING = True

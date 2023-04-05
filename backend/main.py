@@ -6,12 +6,15 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from recipes import recipe_ns
 from auth import auth_ns
+from config import DevConfig
 
 def create_app(config):
     app = Flask(__name__)
     app.config.from_object(config)
 
-    db.init_app(app)
+    if config == DevConfig:
+        db.init_app(app)
+
 
     migrate = Migrate(app, db)
     JWTManager(app)
